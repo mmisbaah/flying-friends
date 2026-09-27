@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Flying Friends — Magical Flight Adventure</title>
+    <link rel="stylesheet" href="./styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="w-screen h-screen flex flex-col items-center justify-center relative">
+
+    <div id="app" class="w-full h-full max-w-md md:max-w-5xl max-h-[950px] bg-gradient-to-b from-sky-400 to-indigo-600 relative overflow-hidden shadow-2xl flex flex-col md:rounded-3xl border border-white/20">
+
+        <!-- 1. SPLASH SCREEN -->
+        <div id="screen-splash" class="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-sky-300 via-indigo-500 to-purple-800 z-50 p-6 text-center">
+            <div class="animate-float mb-6">
+                <div class="w-36 h-36 bg-amber-300 rounded-full flex items-center justify-center shadow-2xl border-4 border-white animate-glow mx-auto relative overflow-hidden">
+                    <canvas id="splash-creature-canvas" width="120" height="120" class="w-28 h-28"></canvas>
+                </div>
+            </div>
+            <h1 class="font-fredoka text-5xl md:text-6xl text-white drop-shadow-lg mb-2">Flying Friends</h1>
+            <p class="text-sky-100 font-semibold text-lg md:text-xl mb-8 max-w-sm">"Soar through magical worlds with your flying friends!"</p>
+            <button onclick="safeClick(() => showScreen('main-menu'))" class="bg-gradient-to-r from-emerald-400 to-teal-500 hover:from-emerald-300 hover:to-teal-400 text-white font-fredoka text-2xl px-10 py-4 rounded-full shadow-xl transform transition hover:scale-110 border-4 border-white animate-bounce cursor-pointer">
+                ✨ START FLYING! ✨
+            </button>
+        </div>
+
+        <!-- 2. MAIN MENU SCREEN -->
+        <div id="screen-main-menu" class="absolute inset-0 flex flex-col items-center justify-between p-6 bg-gradient-to-b from-sky-400 via-blue-500 to-indigo-700 z-20 hidden">
+            <div class="flex justify-between w-full items-center pt-2">
+                <button onclick="safeClick(() => showScreen('settings'))" class="bg-white/20 hover:bg-white/30 text-white font-fredoka px-4 py-2 rounded-full shadow text-sm cursor-pointer">⚙️ Settings</button>
+                <div class="bg-amber-400 text-amber-950 font-fredoka px-4 py-2 rounded-full shadow-lg flex items-center gap-2 text-base border-2 border-white">
+                    💰 <span class="coin-display">1,250</span>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <h1 class="font-fredoka text-4xl md:text-5xl text-white drop-shadow-md">🐦 Flying Friends</h1>
+                <p class="text-sky-200 text-sm font-semibold">Magical Flight Adventure</p>
+            </div>
+
+            <div class="bg-white/25 backdrop-blur-md rounded-3xl p-5 border-2 border-white/50 shadow-xl text-center w-full max-w-xs animate-float flex flex-col items-center">
+                <div class="w-20 h-20 mb-2 relative flex items-center justify-center">
+                    <canvas id="menu-creature-canvas" width="80" height="80" class="w-20 h-20"></canvas>
+                </div>
+                <h3 class="font-fredoka text-white text-xl" id="menu-creature-name">Sunny the Canary</h3>
+                <p class="text-sky-100 text-xs mt-1" id="menu-creature-desc">"Ready for a wonderful flight!"</p>
+            </div>
+
+            <div class="flex flex-col gap-3 w-full max-w-xs mb-2">
+                <button onclick="safeClick(() => showScreen('world-select'))" class="bg-gradient-to-r from-emerald-400 to-green-500 hover:from-emerald-300 text-white font-fredoka text-xl py-3.5 rounded-2xl shadow-lg border-2 border-white flex items-center justify-center gap-3 transform transition hover:scale-105 cursor-pointer">
+                    ✈️ FLY NOW!
+                </button>
+                <button onclick="safeClick(() => showScreen('creature-select'))" class="bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-300 text-white font-fredoka text-lg py-3 rounded-2xl shadow-lg border-2 border-white flex items-center justify-center gap-3 transform transition hover:scale-105 cursor-pointer">
+                    🐦 CREATURES & FRIENDS <span class="bg-white/30 px-2 py-0.5 rounded-full text-xs" id="menu-creature-count">1/11</span>
+                </button>
+                <button onclick="safeClick(() => showScreen('achievements'))" class="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-400 text-white font-fredoka text-lg py-3 rounded-2xl shadow-lg border-2 border-white flex items-center justify-center gap-3 transform transition hover:scale-105 cursor-pointer">
+                    🏆 ACHIEVEMENTS
+                </button>
+                <button onclick="safeClick(() => showScreen('daily-rewards'))" class="bg-gradient-to-r from-pink-400 to-rose-500 hover:from-pink-300 text-white font-fredoka text-lg py-3 rounded-2xl shadow-lg border-2 border-white flex items-center justify-center gap-3 transform transition hover:scale-105 cursor-pointer">
+                    🎁 DAILY REWARDS <span class="bg-white/30 px-2 py-0.5 rounded-full text-xs">Day 3 🔥</span>
+                </button>
+            </div>
+
+            <div class="text-center pb-1">
+                <button onclick="safeClick(checkParentZone)" class="text-white/60 hover:text-white text-xs font-semibold tracking-wider bg-black/20 px-3 py-1 rounded-full cursor-pointer">
+                    👨‍👩‍👧 PARENT ZONE
+                </button>
+            </div>
+        </div>
+
+        <!-- 3. CREATURE & FRIEND SELECT SCREEN -->
+        <div id="screen-creature-select" class="absolute inset-0 flex flex-col p-6 bg-gradient-to-b from-amber-400 via-orange-500 to-rose-600 z-20 hidden overflow-y-auto">
+            <div class="flex justify-between items-center mb-4 mt-2 gap-2">
+                <button onclick="safeClick(() => showScreen('main-menu'))" class="bg-white text-orange-900 font-fredoka px-4 py-2 rounded-full shadow-lg text-sm whitespace-nowrap cursor-pointer">⬅ Menu</button>
+                <h2 class="font-fredoka text-xl md:text-2xl text-white drop-shadow-md text-center flex-1 truncate">Friends & Creatures</h2>
+                <div class="bg-white text-orange-900 font-fredoka px-3 py-1.5 rounded-full shadow text-sm whitespace-nowrap">💰 <span class="coin-display">1,250</span></div>
+            </div>
+            <p class="text-white text-xs text-center mb-4 font-semibold">1 Free Starter • 5 Unlockable with Coins • 5 Premium Real-Money Companions</p>
+            <div class="space-y-4 pb-6" id="creature-list-container"></div>
+        </div>
+
+        <!-- 4. WORLD SELECT SCREEN -->
+        <div id="screen-world-select" class="absolute inset-0 flex flex-col p-6 bg-gradient-to-b from-sky-400 via-indigo-500 to-purple-800 z-20 hidden overflow-y-auto">
+            <div class="flex justify-between items-center mb-4 mt-2 gap-2">
+                <button onclick="safeClick(() => showScreen('main-menu'))" class="bg-white text-indigo-900 font-fredoka px-4 py-2 rounded-full shadow-lg text-sm whitespace-nowrap cursor-pointer">⬅ Menu</button>
+                <h2 class="font-fredoka text-xl md:text-2xl text-white drop-shadow-md text-center flex-1 truncate">Choose World (11 Total)</h2>
+                <div class="bg-white text-indigo-900 font-fredoka px-3 py-1.5 rounded-full shadow text-sm whitespace-nowrap">💰 <span class="coin-display">1,250</span></div>
+            </div>
+            <p class="text-white text-xs text-center mb-4 font-semibold">1 Free Starter • 5 Unlockable with Coins • 5 Premium Real-Money Worlds</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pb-6" id="world-list-container"></div>
+        </div>
+
+        <!-- 5. ACHIEVEMENTS SCREEN -->
+        <div id="screen-achievements" class="absolute inset-0 flex flex-col p-6 bg-gradient-to-b from-purple-700 via-indigo-700 to-blue-900 z-20 hidden overflow-y-auto">
+            <div class="flex justify-between items-center mb-4 mt-2 gap-2">
+                <button onclick="safeClick(() => showScreen('main-menu'))" class="bg-white text-indigo-900 font-fredoka px-4 py-2 rounded-full shadow-lg text-sm whitespace-nowrap cursor-pointer">⬅ Menu</button>
+                <h2 class="font-fredoka text-xl md:text-2xl text-white drop-shadow-md text-center flex-1 truncate">Achievements</h2>
+                <div class="w-16"></div>
+            </div>
+            <div class="space-y-3 pb-6 max-w-md mx-auto w-full" id="achievements-list-container"></div>
+        </div>
+
+        <!-- 6. FLIGHT MODE SCREEN & GAME CANVAS -->
+        <div id="screen-flight" class="absolute inset-0 flex flex-col bg-sky-300 z-20 hidden">
+            <div class="absolute top-0 left-0 right-0 p-4 flex flex-col gap-2 z-30 pointer-events-none">
+                <div class="flex justify-between items-center">
+                    <div class="bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full shadow flex items-center gap-2 font-fredoka text-sm text-indigo-900">
+                        <span id="hud-creature-name">Sunny</span>
+                    </div>
+                    <div class="bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full shadow flex items-center gap-2 font-fredoka text-sm text-amber-800">
+                        <span id="hud-collectible-icon">🌻</span> <span id="hud-sparkle-count">0/30</span>
+                    </div>
+                    <div class="bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full shadow flex items-center gap-2 font-fredoka text-sm text-emerald-800">
+                        👥 <span id="hud-friend-count">0/3</span>
+                    </div>
+                    <button onclick="safeClick(pauseGame)" class="pointer-events-auto bg-white/90 hover:bg-white text-indigo-900 font-fredoka px-3 py-1.5 rounded-full shadow text-sm cursor-pointer">
+                        ⏸️ Pause
+                    </button>
+                </div>
+
+                <div class="bg-white/80 backdrop-blur-md p-1.5 rounded-full shadow border border-white flex items-center gap-3 px-4 pointer-events-auto">
+                    <span class="font-fredoka text-xs text-indigo-900 whitespace-nowrap">🏁 Journey</span>
+                    <div class="flex-1 bg-indigo-200/70 h-3 rounded-full overflow-hidden relative shadow-inner">
+                        <div id="level-progress-fill" class="bg-gradient-to-r from-amber-400 to-emerald-400 h-full w-0 transition-all duration-100 rounded-full"></div>
+                    </div>
+                    <span class="font-fredoka text-xs text-indigo-900 whitespace-nowrap" id="level-progress-pct">0%</span>
+                </div>
+            </div>
+
+            <div class="w-full flex-1 relative overflow-hidden" id="canvas-container">
+                <canvas id="game-canvas" class="w-full h-full block"></canvas>
+            </div>
+
+            <div class="bg-indigo-900/80 backdrop-blur-md p-3 text-center text-white text-xs font-semibold flex justify-around items-center">
+                <span>👆 Tap & Hold Top: Rise</span>
+                <span>👇 Release: Descend</span>
+                <span>🏁 Reach 100% to Complete Journey!</span>
+            </div>
+        </div>
+
+        <!-- 7. PAUSE MENU -->
+        <div id="screen-pause" class="absolute inset-0 bg-black/60 backdrop-blur-sm z-40 flex items-center justify-center hidden p-6">
+            <div class="bg-white rounded-3xl p-6 w-full max-w-xs text-center shadow-2xl border-4 border-indigo-200">
+                <h2 class="font-fredoka text-3xl text-indigo-900 mb-6">⏸️ Paused</h2>
+                <div class="space-y-3">
+                    <button onclick="safeClick(resumeGame)" class="w-full bg-emerald-500 hover:bg-emerald-400 text-white font-fredoka text-lg py-3 rounded-2xl shadow cursor-pointer">▶ Resume</button>
+                    <button onclick="safeClick(restartFlight)" class="w-full bg-amber-500 hover:bg-amber-400 text-white font-fredoka text-lg py-3 rounded-2xl shadow cursor-pointer">🔄 Retry Flight</button>
+                    <button onclick="safeClick(() => showScreen('main-menu'))" class="w-full bg-rose-500 hover:bg-rose-400 text-white font-fredoka text-lg py-3 rounded-2xl shadow cursor-pointer">🏠 Main Menu</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 8. RESULTS SCREEN WITH 5-STAR RATING -->
+        <div id="screen-results" class="absolute inset-0 bg-gradient-to-b from-indigo-600 via-purple-600 to-pink-600 z-40 flex flex-col items-center justify-center p-6 hidden overflow-y-auto">
+            <div class="bg-white/95 backdrop-blur-md rounded-3xl p-6 w-full max-w-sm text-center shadow-2xl border-4 border-white my-auto">
+                <div class="text-5xl mb-2 animate-bounce">✨</div>
+                <h2 class="font-fredoka text-3xl text-indigo-900 mb-1">World Complete!</h2>
+                <p class="text-gray-600 text-sm mb-3" id="results-world-name">Sunny Meadow</p>
+
+                <div class="flex justify-center gap-1.5 mb-4 text-3xl" id="results-stars-container">
+                    <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span>
+                </div>
+
+                <div class="bg-indigo-50 rounded-2xl p-4 mb-4 text-left space-y-3">
+                    <div class="flex justify-between items-center font-semibold text-sm">
+                        <span class="text-gray-700" id="res-collectible-label">🌻 Items Collected:</span>
+                        <span class="font-fredoka text-amber-600" id="res-sparkles">25/30</span>
+                    </div>
+                    <div class="w-full bg-gray-200 h-2.5 rounded-full overflow-hidden">
+                        <div id="res-sparkle-bar" class="bg-amber-400 h-full w-full rounded-full"></div>
+                    </div>
+
+                    <div class="flex justify-between items-center font-semibold text-sm pt-1">
+                        <span class="text-gray-700">👥 Friends Helped:</span>
+                        <span class="font-fredoka text-emerald-600" id="res-friends">3/3</span>
+                    </div>
+                    
+                    <div class="flex justify-between items-center font-semibold text-sm pt-1">
+                        <span class="text-gray-700">📊 Completion Rate:</span>
+                        <span class="font-fredoka text-indigo-600" id="res-completion-rate">100%</span>
+                    </div>
+                </div>
+
+                <div class="bg-amber-50 border-2 border-amber-200 rounded-2xl p-3 mb-4 text-center">
+                    <p class="text-xs text-amber-800 font-semibold">Total Rewards Earned</p>
+                    <p class="font-fredoka text-2xl text-amber-600">+<span id="res-coins">450</span> 💰</p>
+                </div>
+
+                <div class="flex gap-3">
+                    <button onclick="safeClick(restartFlight)" class="flex-1 bg-amber-500 hover:bg-amber-400 text-white font-fredoka py-3 rounded-2xl shadow cursor-pointer">🔄 Retry</button>
+                    <button onclick="safeClick(() => showScreen('world-select'))" class="flex-1 bg-emerald-500 hover:bg-emerald-400 text-white font-fredoka py-3 rounded-2xl shadow cursor-pointer">▶ Continue</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 9. DAILY REWARDS SCREEN -->
+        <div id="screen-daily-rewards" class="absolute inset-0 bg-gradient-to-b from-pink-500 via-rose-500 to-purple-700 z-30 flex flex-col p-6 hidden overflow-y-auto">
+            <div class="flex justify-between items-center mb-4 mt-2 gap-2">
+                <button onclick="safeClick(() => showScreen('main-menu'))" class="bg-white text-rose-900 font-fredoka px-4 py-2 rounded-full shadow-lg text-sm whitespace-nowrap cursor-pointer">⬅ Menu</button>
+                <h2 class="font-fredoka text-xl md:text-2xl text-white drop-shadow-md text-center flex-1 truncate">Daily Rewards</h2>
+                <div class="w-16"></div>
+            </div>
+
+            <div class="bg-white/90 backdrop-blur-md rounded-3xl p-6 text-center shadow-2xl max-w-sm mx-auto w-full my-auto">
+                <span class="text-4xl mb-2 block">🎁</span>
+                <h3 class="font-fredoka text-2xl text-indigo-900 mb-1">Day 3 Streak!</h3>
+                <p class="text-gray-600 text-xs mb-6">Come back every day for bigger coin rewards and gifts!</p>
+
+                <div class="grid grid-cols-4 gap-2 mb-6">
+                    <div class="bg-emerald-100 border-2 border-emerald-500 rounded-xl p-2 text-center"><span class="text-xs font-bold text-emerald-800">Day 1</span><p class="text-xs">50 💰</p></div>
+                    <div class="bg-emerald-100 border-2 border-emerald-500 rounded-xl p-2 text-center"><span class="text-xs font-bold text-emerald-800">Day 2</span><p class="text-xs">75 💰</p></div>
+                    <div class="bg-amber-100 border-2 border-amber-500 rounded-xl p-2 text-center animate-pulse"><span class="text-xs font-bold text-amber-800">Day 3</span><p class="text-xs">100 💰</p></div>
+                    <div class="bg-gray-100 border-2 border-gray-300 rounded-xl p-2 text-center opacity-70"><span class="text-xs font-bold text-gray-600">Day 4</span><p class="text-xs">125 💰</p></div>
+                </div>
+
+                <button onclick="safeClick(claimDailyReward)" class="w-full bg-gradient-to-r from-emerald-400 to-teal-500 hover:from-emerald-300 text-white font-fredoka text-lg py-3 rounded-2xl shadow-lg border-2 border-white cursor-pointer">
+                    ✨ CLAIM 100 COINS! ✨
+                </button>
+            </div>
+        </div>
+
+        <!-- 10. SETTINGS SCREEN -->
+        <div id="screen-settings" class="absolute inset-0 bg-gradient-to-b from-indigo-700 via-purple-700 to-pink-700 z-30 flex flex-col p-6 hidden overflow-y-auto">
+            <div class="flex justify-between items-center mb-4 mt-2 gap-2">
+                <button onclick="safeClick(() => showScreen('main-menu'))" class="bg-white text-indigo-900 font-fredoka px-4 py-2 rounded-full shadow-lg text-sm whitespace-nowrap cursor-pointer">⬅ Menu</button>
+                <h2 class="font-fredoka text-xl md:text-2xl text-white drop-shadow-md text-center flex-1 truncate">Settings</h2>
+                <div class="w-16"></div>
+            </div>
+
+            <div class="bg-white/90 backdrop-blur-md rounded-3xl p-6 space-y-4 max-w-sm mx-auto w-full shadow-2xl">
+                <div class="flex justify-between items-center bg-gray-50 p-3 rounded-2xl border border-gray-200">
+                    <span class="font-fredoka text-gray-800">🔊 Sound Effects</span>
+                    <button onclick="safeClick(() => toggleSetting('sound'))" id="toggle-sound" class="bg-emerald-500 text-white font-fredoka px-4 py-1.5 rounded-xl text-sm shadow cursor-pointer">ON</button>
+                </div>
+                <div class="flex justify-between items-center bg-gray-50 p-3 rounded-2xl border border-gray-200">
+                    <span class="font-fredoka text-gray-800">🎵 Background Music</span>
+                    <button onclick="safeClick(() => toggleSetting('music'))" id="toggle-music" class="bg-emerald-500 text-white font-fredoka px-4 py-1.5 rounded-xl text-sm shadow cursor-pointer">ON</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 11. PARENT ZONE SCREEN -->
+        <div id="screen-parent-zone" class="absolute inset-0 bg-slate-900 z-50 flex flex-col p-6 hidden overflow-y-auto text-white">
+            <div class="flex justify-between items-center mb-4 mt-2 gap-2">
+                <button onclick="safeClick(() => showScreen('main-menu'))" class="bg-white/20 hover:bg-white/30 text-white font-fredoka px-4 py-2 rounded-full text-sm whitespace-nowrap cursor-pointer">⬅ Menu</button>
+                <h2 class="font-fredoka text-xl md:text-2xl text-amber-400 text-center flex-1 truncate">👨‍👩‍👧 Parent Zone</h2>
+                <div class="w-16"></div>
+            </div>
+
+            <div class="bg-slate-800 rounded-3xl p-6 space-y-4 max-w-sm mx-auto w-full border border-slate-700">
+                <h3 class="font-fredoka text-lg text-emerald-400">📊 Play Statistics</h3>
+                <div class="space-y-2 text-sm text-slate-300">
+                    <div class="flex justify-between bg-slate-900/60 p-2.5 rounded-xl"><span>Total Flights:</span><span id="stat-flights" class="font-bold text-white">47</span></div>
+                    <div class="flex justify-between bg-slate-900/60 p-2.5 rounded-xl"><span>Collectibles Collected:</span><span id="stat-sparkles" class="font-bold text-white">2,450</span></div>
+                    <div class="flex justify-between bg-slate-900/60 p-2.5 rounded-xl"><span>Friends Helped:</span><span id="stat-friends" class="font-bold text-white">28</span></div>
+                </div>
+
+                <div class="pt-2">
+                    <h3 class="font-fredoka text-lg text-amber-400 mb-2">🔒 Safety Assurance</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed">Flying Friends is fully COPPA compliant. There are no external social links, no mandatory ads during flight gameplay, and no stressful failure states. Designed exclusively for peaceful, encouraging exploration.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 12. REAL-MONEY CHECKOUT MODAL -->
+        <div id="screen-checkout" class="absolute inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-6 hidden">
+            <div class="bg-white rounded-3xl p-6 w-full max-w-xs text-center shadow-2xl border-4 border-purple-300">
+                <span class="text-4xl mb-2 block">💳</span>
+                <h3 class="font-fredoka text-2xl text-indigo-900 mb-1">Secure Checkout</h3>
+                <p class="text-gray-600 text-xs mb-4" id="checkout-item-desc">Unlock premium creature/world!</p>
+                <div class="bg-purple-50 border-2 border-purple-200 rounded-2xl p-3 mb-4 text-center">
+                    <p class="text-xs text-purple-800 font-semibold">Total Price</p>
+                    <p class="font-fredoka text-2xl text-purple-600" id="checkout-item-price">$2.99</p>
+                </div>
+                <div class="space-y-2">
+                    <button onclick="safeClick(confirmRealMoneyPurchase)" class="w-full bg-gradient-to-r from-emerald-400 to-teal-500 text-white font-fredoka py-3 rounded-2xl shadow-lg cursor-pointer">
+                        ✨ PAY NOW ✨
+                    </button>
+                    <button onclick="safeClick(() => document.getElementById('screen-checkout').classList.add('hidden'))" class="w-full bg-gray-200 text-gray-700 font-fredoka py-2.5 rounded-xl cursor-pointer">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+    <script type="module" src="./game.js"></script>
+</body>
+</html>
+

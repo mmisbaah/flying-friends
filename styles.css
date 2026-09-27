@@ -1,0 +1,18 @@
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; touch-action: none; }
+        body, html { width: 100%; height: 100%; overflow: hidden; background: #05070d; font-family: 'Nunito', sans-serif; color: #dfe9fb; }
+        .font-fredoka { font-family: 'Fredoka One', cursive, sans-serif; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(2deg); }
+        }
+        .animate-float { animation: float 3s ease-in-out infinite; }
+        @keyframes pulse-glow {
+            0%, 100% { filter: drop-shadow(0 0 8px rgba(255,221,68,0.8)); }
+            50% { filter: drop-shadow(0 0 16px rgba(255,221,68,1)); }
+        }
+        .animate-glow { animation: pulse-glow 2s ease-in-out infinite; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.3); border-radius: 3px; }
+    </style>

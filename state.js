@@ -1,0 +1,2 @@
+export const gameState = { coins: 1250, currentCreatureId: 'canary', currentWorldId: 'meadow', settings: { sound: true, music: true }, stats: { flights: 47, sparkles: 2450, friends: 28 } };
+export function resetGameState() { gameState.coins=1250; gameState.currentCreatureId='canary'; gameState.currentWorldId='meadow'; gameState.settings={sound:true,music:true}; gameState.stats={flights:47,sparkles:2450,friends:28}; }

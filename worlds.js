@@ -1,0 +1,13 @@
+export const WORLDS = [
+            { id: 'meadow', name: 'Sunny Meadow', icon: '🌻', diff: 'Easy', unlocked: true, tier: 'free', price: 0, color: '#38bdf8', groundColor: '#4ade80', desc: 'Bright, sunny meadows.', collectible: '🌻', nameCol: 'Sunflowers' },
+            { id: 'forest', name: 'Enchanted Forest', icon: '🌲', diff: 'Easy', unlocked: false, tier: 'coins', price: 400, color: '#1e3a8a', groundColor: '#15803d', desc: 'Magical trees and fireflies.', collectible: '🍄', nameCol: 'Magic Mushrooms' },
+            { id: 'starry', name: 'Starry Sky', icon: '⭐', diff: 'Medium', unlocked: false, tier: 'coins', price: 700, color: '#312e81', groundColor: '#4338ca', desc: 'Dreamy starlit night skies.', collectible: '⭐', nameCol: 'Twinkling Stars' },
+            { id: 'ocean', name: 'Underwater Kingdom', icon: '🌊', diff: 'Medium', unlocked: false, tier: 'coins', price: 1000, color: '#0369a1', groundColor: '#0284c7', desc: 'Flowing coral ocean depths.', collectible: '🐚', nameCol: 'Sea Shells' },
+            { id: 'clouds', name: 'Cotton Cloud Land', icon: '☁️', diff: 'Hard', unlocked: false, tier: 'coins', price: 1300, color: '#60a5fa', groundColor: '#93c5fd', desc: 'Soft pastel dreamland.', collectible: '☁️', nameCol: 'Cloud Puffs' },
+            { id: 'crystal', name: 'Crystal Caves', icon: '💎', diff: 'Hard', unlocked: false, tier: 'coins', price: 1600, color: '#581c87', groundColor: '#7e22ce', desc: 'Shimmering gemstone caves.', collectible: '💎', nameCol: 'Gems' },
+            { id: 'rainbow', name: 'Rainbow Bridge', icon: '🌈', diff: 'Expert', unlocked: false, tier: 'money', price: 1.99, color: '#ec4899', groundColor: '#db2777', desc: 'Magical prismatic sky path.', collectible: '🌈', nameCol: 'Rainbow Drops' },
+            { id: 'galaxy', name: 'Deep Galaxy', icon: '🌌', diff: 'Expert', unlocked: false, tier: 'money', price: 2.99, color: '#0f172a', groundColor: '#1e1b4b', desc: 'Journey among distant stars.', collectible: '🪐', nameCol: 'Planets' },
+            { id: 'volcano', name: 'Magma Mountain', icon: '🌋', diff: 'Master', unlocked: false, tier: 'money', price: 3.99, color: '#7f1d1d', groundColor: '#991b1b', desc: 'Fiery glowing lava peaks.', collectible: '🔥', nameCol: 'Embers' },
+            { id: 'candy', name: 'Sweet Candyland', icon: '🍬', diff: 'Master', unlocked: false, tier: 'money', price: 4.99, color: '#f472b6', groundColor: '#db2777', desc: 'Delicious sugary skies.', collectible: '🍬', nameCol: 'Candies' },
+            { id: 'aurora', name: 'Aurora Borealis', icon: '✨', diff: 'Ultimate', unlocked: false, tier: 'money', price: 5.99, color: '#065f46', groundColor: '#047857', desc: 'Northern lights magic world.', collectible: '✨', nameCol: 'Stardust' }
+        ];
